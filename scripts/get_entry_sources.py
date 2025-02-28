@@ -1,4 +1,5 @@
 from pathlib import Path
+from zipfile import ZipFile
 
 import requests
 
@@ -23,15 +24,24 @@ def download_zip(url, save_path):
     else:
         print(f"Failed to download file. Status code: {response.status_code}")
 
+def extract_zip(file, out_dir):
+    with ZipFile(file, 'r') as zip:
+        zip.extractall(out_dir)
+
 if __name__ == '__main__':
     # Make sure destination directory exists
     destination_dir.mkdir(parents=True, exist_ok=True)
 
-    # Download zip folder containing each team's entry
+    # Obtain each team's entry
     for name in teams:
         destination_file = destination_dir / (name + ".zip")
+
+        # Download zip folder with team's entry
         if destination_file.exists():
             print(f"Already downloaded: {destination_file}")
-            continue
-        url = sources_url + name + ".zip"
-        download_zip(url, destination_file)
+        else:
+            url = sources_url + name + ".zip"
+            download_zip(url, destination_file)
+
+        # Extract zip folder
+        extract_zip(destination_file, destination_dir)
