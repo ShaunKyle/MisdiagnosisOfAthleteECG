@@ -8,6 +8,7 @@
 # PyTorch       v1.13.1
 # CUDA version  11.6
 # https://pytorch.org/get-started/previous-versions/#v1131
+# https://download.pytorch.org/whl/torch_stable.html
 
 --extra-index-url https://download.pytorch.org/whl/cu116
 torch==1.13.1+cu116 
