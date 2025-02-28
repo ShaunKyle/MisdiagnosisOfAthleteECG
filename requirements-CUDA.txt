@@ -1,0 +1,16 @@
+# To make use of an NVIDIA GPU for computations, the PyTorch version we can use 
+# is limited by the CUDA version installed/supported on the computer.
+
+# Use `nvcc --version` to find the CUDA version
+
+# Reza's Computer
+# ---------------
+# PyTorch       v1.13.1
+# CUDA version  11.6
+# https://pytorch.org/get-started/previous-versions/#v1131
+
+--extra-index-url https://download.pytorch.org/whl/cu116
+torch==1.13.1+cu116 
+torchvision==0.14.1+cu116 
+torchaudio==0.13.1
+

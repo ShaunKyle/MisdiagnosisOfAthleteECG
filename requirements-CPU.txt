@@ -1,0 +1,7 @@
+# Matches the PyTorch version specified in `requirements-CUDA.txt`.
+# Use this when testing without NVIDIA GPU (e.g. using MacOS)
+
+torch==1.13.1 
+torchvision==0.14.1 
+torchaudio==0.13.1
+
