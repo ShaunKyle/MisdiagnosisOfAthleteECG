@@ -9,7 +9,7 @@ someone else's computer.
 Create python virtual environment inside the `.venv` directory.
 
 ```sh
-uv venv --python 3.12
+uv venv --python 3.10
 ```
 
 Activate the virutal environment in shell (prepend `.venv/bin` to PATH)
