@@ -1,7 +1,12 @@
 # Project specific .gitignore
 # ---------------------------
 
+# Downloaded datasets and models
+data
 entries
+
+# User settings (specific to a computer)
+config.ini
 
 # Generic Python .gitignore
 # -------------------------
