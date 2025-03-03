@@ -1,2 +1,24 @@
 # Utility packages for scripts
 requests
+
+# Waveform Database (handling physiological signals, accessing PhysioNet data)
+wfdb
+
+# PF12RED dataset is hosted on GitHub
+GitPython
+
+# Required by `driver.py` in every team entry
+numpy
+scipy
+
+# Development tools
+ipykernel
+
+# # Team: DSAIL_SNU
+# # upgrade thop -> ultralytics-thop (for profiling PyTorch models)
+# scikit_learn
+# ultralytics-thop
+# future
+
+# # Team: Prna
+# PyWavelets
