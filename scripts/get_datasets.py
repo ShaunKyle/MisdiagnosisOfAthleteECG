@@ -84,7 +84,7 @@ if __name__ == "__main__":
     physionet_dir = data_dir / "physionet.org" / "files"
     download_pf12red_dataset() if not (data_dir / "pf12red").exists() else print("pf12red already downloaded")
     download_norwegian() if not (physionet_dir / "norwegian-athlete-ecg").exists() else print("norwegian-athlete-ecg already downloaded")
-    download_physionet2020 if not (physionet_dir / "challenge-2020").exists() else print("challenge-2020 already downloaded")
+    download_physionet2020() if not (physionet_dir / "challenge-2020").exists() else print("challenge-2020 already downloaded")
 
     # TODO: consider if we need MIMIC-IV, and whether we need slightly better 
     # data management than "just wget everything".
