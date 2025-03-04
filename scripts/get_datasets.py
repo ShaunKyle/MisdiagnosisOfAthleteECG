@@ -9,7 +9,23 @@ data_dir = Path(expanduser("./data"))
 
 def wget(url, to_path):
     # TODO: Check if wget is available first. Suggest how to install if not.
-    os.system(f"wget -r -N -c -np -P {to_path} {url}")
+
+    # https://www.man7.org/linux/man-pages/man1/wget.1.html
+    # Mirroring
+    # ---------
+    # -r        Turns on recursive retrieval (default depth 5)
+    # -N        Turn on timestamps
+    # -l inf    Infinite recursion depth
+    # -c    Continue to download partially-downloaded files
+    # -np   Never recursively ascend to parent directories
+    #
+    # Output directory
+    # ----------------
+    # -nH   Disable creation of hostname directory (e.g. physionet.org)
+    # --cut-dirs=1  Ignore first part of url in directory structure (e.g. physionet.org/files)
+    # -P    Prefix for output directory
+    os.system(f"wget -r -N -c -np -nH --cut-dirs=1 -P {to_path} {url}")
+    
 
 # PhysioNet Challenge 2020 - Training data (7.5 GB)
 # https://physionet.org/content/challenge-2020/1.0.2/training/#files-panel
@@ -23,10 +39,10 @@ def wget(url, to_path):
 # - georgia (12-Lead ECG Challenge Database), 10,344 recordings
 def download_physionet2020():
     wget(
-        url="https://physionet.org/files/challenge-2020/1.0.2/training",
+        url="https://physionet.org/files/challenge-2020/1.0.2/",
         to_path=data_dir
     )
-    print("Finished downloading PhysioNet Challenge 2020 training datasets")
+    print("Finished downloading PhysioNet Challenge 2020")
 
 # MIMIC-IV ECG Matched Subset (90.4 GB)
 def download_mimiciv():
@@ -81,10 +97,9 @@ if __name__ == "__main__":
 
     # Downloads
     print("Starting downloads...")
-    physionet_dir = data_dir / "physionet.org" / "files"
     download_pf12red_dataset() if not (data_dir / "pf12red").exists() else print("pf12red already downloaded")
-    download_norwegian() if not (physionet_dir / "norwegian-athlete-ecg").exists() else print("norwegian-athlete-ecg already downloaded")
-    download_physionet2020() if not (physionet_dir / "challenge-2020").exists() else print("challenge-2020 already downloaded")
+    download_norwegian() if not (data_dir / "norwegian-athlete-ecg").exists() else print("norwegian-athlete-ecg already downloaded")
+    download_physionet2020() if not (data_dir / "challenge-2020").exists() else print("challenge-2020 already downloaded")
 
     # TODO: consider if we need MIMIC-IV, and whether we need slightly better 
     # data management than "just wget everything".
