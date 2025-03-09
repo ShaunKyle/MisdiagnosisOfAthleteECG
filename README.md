@@ -46,3 +46,15 @@ uv pip install -U -r requirements.txt
 uv pip install -U -r requirements-CPU.txt
 uv pip install -U -r requirements.txt
 ```
+
+## Citation
+
+Citation metadata is provided by [CITATION.cff](./CITATION.cff). For convenience, a BibTex citation is provided below.
+
+```bibtex
+@software{Kyle_Classification_of_12-lead,
+author = {Kyle, Shaun},
+title = {{Classification of 12-lead ECG recordings from athletes}},
+url = {https://github.com/ShaunKyle/PhysioNetChallenge2020}
+}
+```
