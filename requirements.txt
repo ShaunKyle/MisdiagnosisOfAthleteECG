@@ -11,8 +11,10 @@ GitPython
 numpy
 scipy
 
-# Development tools
+# Development and analysis tools
 ipykernel
+seaborn[stats]
+pandas
 
 # # Team: DSAIL_SNU
 # # upgrade thop -> ultralytics-thop (for profiling PyTorch models)
