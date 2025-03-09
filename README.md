@@ -1,6 +1,7 @@
-# Classification of 12-lead ECGs
+# Classification of 12-lead ECG recordings from athletes
 
-> Investigating reduced performance on athletic patient cohorts
+> Investigating reduced deep learning model performance on athletic patient 
+cohorts
 
 Running 12-Lead ECG classification models from the [2020 George B. Moody 
 PhysioNet Challenge](https://moody-challenge.physionet.org/2020/results/) on 
