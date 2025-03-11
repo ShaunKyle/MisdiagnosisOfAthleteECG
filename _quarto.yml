@@ -1,0 +1,19 @@
+project:
+  type: website
+  output-dir: docs
+  render:
+    - nbs/Marquette-SL12-misclassification.ipynb
+
+website:
+  title: "Misdiagnosis of athlete ECG recordings"
+  navbar:
+    left:
+      - href: nbs/Marquette-SL12-misclassification.ipynb
+        text: 1. Norwegian case study
+
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+    toc: true
