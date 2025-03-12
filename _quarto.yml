@@ -17,3 +17,12 @@ format:
       - cosmo
       - brand
     toc: true
+
+execute:
+  freeze: true  # Never re-render during project render (PyTorch models...)
+# Make sure to save Jupyter notebooks with all code cells run.
+# This will make it easier to share results, which can also be published on a 
+# documentation website using quarto and Github Pages.
+#
+# For more info on Publishing to Github Pages, go to:
+# https://quarto.org/docs/publishing/github-pages.html
