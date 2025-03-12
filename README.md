@@ -47,6 +47,16 @@ uv pip install -U -r requirements-CPU.txt
 uv pip install -U -r requirements.txt
 ```
 
+Documentation website
+
+```sh
+# Preview website locally
+quarto preview
+
+# Update documentation website (gh-pages branch)
+quarto publish gh-pages
+```
+
 ## Citation
 
 Citation metadata is provided by [CITATION.cff](./CITATION.cff). For convenience, a BibTex citation is provided below.
