@@ -178,11 +178,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>The GE Marquette… commonly used…</p>
-<p>This report will demonstrate that… consistently misdiagnose athletes…</p>
+<p>This report will demonstrate that an existing clinical decision support software for diagnosis of cardiac health from electrocardiogram (ECG) <strong>consistently misdiagnoses elite athletes</strong>.</p>
+<p><img src="../media/GE-Muse-MAC-VU-360.png" class="img-fluid"></p>
+<p><strong><em>Figure: Hardware for acquisition and processing of resting ECG. Left - GE CAM acquisition module. Right - GE MAC VU360 electrocardiograph.</em></strong></p>
 <section id="notebook-setup" class="level2">
 <h2 class="anchored" data-anchor-id="notebook-setup">Notebook setup</h2>
-<div id="cell-4" class="cell" data-execution_count="1">
+<div id="cell-5" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Click to see packages imported</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
@@ -201,12 +202,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="the-norwegian-athlete-ecg-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="the-norwegian-athlete-ecg-dataset">The norwegian-athlete-ecg dataset</h2>
-<p>The <a href="https://physionet.org/content/norwegian-athlete-ecg/1.0.0/">Norwegian Endurance Athlete ECG Database</a> (norwegian-athlete-ecg) contains 12-lead ECG recordings from 28 elite athletes from various sports in Norway. All recordings are 10 seconds resting ECGs recorded with a General Electric (GE) MAC VUE 360 electrocardiograph. All ECGs are interpreted with both the GE Marquette SL12 algorithm (version 23 (v243)) and one cardiologist with training in interpretation of athlete’s ECG. The data was collected at the University of Oslo in February and March 2020.</p>
-<div id="cell-9" class="cell" data-execution_count="4">
+<p>The <a href="https://physionet.org/content/norwegian-athlete-ecg/1.0.0/">Norwegian Endurance Athlete ECG Database</a> (norwegian-athlete-ecg) contains 12-lead ECG recordings from 28 elite athletes from various sports in Norway. All recordings are 10 seconds resting ECGs recorded with a General Electric (GE) MAC VUE 360 electrocardiograph. All ECGs are interpreted with both the <a href="https://www.gehealthcare.com/products/marquette-12sl">GE Marquette SL12 algorithm</a> (version 23 (v243)) and one cardiologist with training in interpretation of athlete’s ECG. The data was collected at the University of Oslo in February and March 2020.</p>
+<div id="cell-10" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>athlete_ecg_dir <span class="op">=</span> data_dir <span class="op">/</span> <span class="st">"norwegian-athlete-ecg"</span> <span class="op">/</span> <span class="st">"1.0.0"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>An example of the data for athlete <code>ath_001</code> is shown below.</p>
-<div id="cell-11" class="cell" data-execution_count="5">
+<div id="cell-12" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 12-lead ECG recording from subject ath_001</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>record <span class="op">=</span> wfdb.rdrecord(athlete_ecg_dir <span class="op">/</span> <span class="st">"ath_001"</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>wfdb.plot_wfdb(record<span class="op">=</span>record, title<span class="op">=</span><span class="st">'ath_001 from Norwegian Athlete ECG database'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -218,7 +219,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="cell-12" class="cell" data-execution_count="6">
+<div id="cell-13" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Machine (SL12) and Cardiologist (C) interpretation of ath_001 ECG recording</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>record <span class="op">=</span> wfdb.rdheader(athlete_ecg_dir <span class="op">/</span> <span class="st">"ath_001"</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>record.__dict__[<span class="st">"comments"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -227,7 +228,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  'C: Sinus arrhythmia,  Normal ECG']</code></pre>
 </div>
 </div>
-<div id="cell-13" class="cell" data-execution_count="7">
+<div id="cell-14" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Put ECG finding reports into a pandas dataframe</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AthleteReport():</span>
@@ -249,7 +250,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>athlete_ecg_df <span class="op">=</span> pd.DataFrame(reports_list)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="cell-14" class="cell" data-execution_count="8">
+<div id="cell-15" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>athlete_ecg_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <div>
@@ -328,43 +329,54 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td><code>ST elevation, consider early repolarization, pericarditis, or injury</code></td>
-<td><code>ath_27</code></td>
+<td><code>ath_027</code></td>
 </tr>
 </tbody>
 </table>
 <p>Follow-up comments from SL12 all seem to start with a lower-case letter, so they can be detected this way.</p>
-<div id="cell-17" class="cell" data-execution_count="9">
+<p>Some findings are also combined into one sentence using a conjunction word such as “and”.</p>
+<p>e.g.&nbsp;<code>Sinus bradycardia and sinus arrhythmia and first degree AV block</code></p>
+<div id="cell-18" class="cell" data-execution_count="16">
 <details class="code-fold">
 <summary>Click to see function for extracting a list of findings from a single line report</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_findings(report: <span class="bu">str</span>, follow_on: <span class="bu">bool</span><span class="op">=</span><span class="va">True</span>) <span class="op">-&gt;</span> List[<span class="bu">str</span>]:</span>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_findings(report: <span class="bu">str</span>, follow_on: <span class="bu">bool</span><span class="op">=</span><span class="va">True</span>, split_and<span class="op">=</span><span class="va">True</span>) <span class="op">-&gt;</span> List[<span class="bu">str</span>]:</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Extract a list of all findings in a single line cardiologist report</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    comments <span class="op">=</span> report.split(<span class="st">': '</span>, maxsplit<span class="op">=</span><span class="dv">1</span>)[<span class="dv">1</span>].split(<span class="st">', '</span>)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Cleanup (e.g. remove leading/trailing whitespace)</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    comments[:] <span class="op">=</span> <span class="bu">list</span>(<span class="bu">map</span>(<span class="bu">str</span>.strip, comments))</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> follow_on:</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> comments     <span class="co"># i.e. assume every comment is a new finding</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Combine follow-on comments with parent comment to produce full finding </span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for SL12 machine comments.</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">#</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># e.g. ST elevation, consider early repolarization, pericarditis, or injury</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    findings <span class="op">=</span> []</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, comment <span class="kw">in</span> <span class="bu">enumerate</span>(comments):</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> comment[<span class="dv">0</span>].isupper() <span class="kw">or</span> comment[<span class="dv">0</span>] <span class="op">==</span> <span class="st">'*'</span>:</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>            findings.append(comment)</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>            findings[<span class="op">-</span><span class="dv">1</span>] <span class="op">=</span> <span class="st">''</span>.join([findings[<span class="op">-</span><span class="dv">1</span>], <span class="st">", "</span>, comment])</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> findings</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Also split multiple findings in a single comment joined by 'and'.</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># e.g. Sinus bradycardia and sinus arrhythmia and first degree AV block</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> split_and:</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        temp <span class="op">=</span> []</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> comment <span class="kw">in</span> comments:</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> segment <span class="kw">in</span> comment.split(<span class="st">'and'</span>):</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>                temp.append(segment)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        comments <span class="op">=</span> temp</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Cleanup (e.g. remove leading/trailing whitespace)</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    comments[:] <span class="op">=</span> <span class="bu">list</span>(<span class="bu">map</span>(<span class="bu">str</span>.strip, comments))</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> follow_on:</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> comments     <span class="co"># i.e. assume every comment is a new finding</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Combine follow-on comments with parent comment to produce full finding </span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for SL12 machine comments.</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">#</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># e.g. ST elevation, consider early repolarization, pericarditis, or injury</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    findings <span class="op">=</span> []</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, comment <span class="kw">in</span> <span class="bu">enumerate</span>(comments):</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> comment[<span class="dv">0</span>].isupper() <span class="kw">or</span> comment[<span class="dv">0</span>] <span class="op">==</span> <span class="st">'*'</span>:</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>            findings.append(comment)</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>            findings[<span class="op">-</span><span class="dv">1</span>] <span class="op">=</span> <span class="st">''</span>.join([findings[<span class="op">-</span><span class="dv">1</span>], <span class="st">", "</span>, comment])</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> findings</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="cell-18" class="cell" data-execution_count="10">
+<div id="cell-19" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example usage of `extract_findings()`</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>report <span class="op">=</span> athlete_ecg_df.loc[<span class="dv">23</span>].machine</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>extract_findings(report)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="10">
+<div class="cell-output cell-output-display" data-execution_count="17">
 <pre><code>['Sinus bradycardia',
  'Incomplete right bundle branch block',
  'Minimal voltage criteria for LVH, may be normal variant',
@@ -372,7 +384,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  'Borderline ECG']</code></pre>
 </div>
 </div>
-<div id="cell-19" class="cell" data-execution_count="11">
+<div id="cell-20" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find every unique finding in dataset</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>unique_findings_sl12 <span class="op">=</span> []</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>unique_findings_c <span class="op">=</span> []</span>
@@ -393,9 +405,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> finding <span class="kw">not</span> <span class="kw">in</span> unique_findings_c:</span>
 <span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>            unique_findings_c.append(finding)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-20" class="cell" data-execution_count="12">
+<div id="cell-21" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>unique_findings_c</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="12">
+<div class="cell-output cell-output-display" data-execution_count="19">
 <pre><code>['Sinus arrhythmia',
  'Normal ECG',
  'Right axis deviation',
@@ -413,16 +425,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  'first degree AV block']</code></pre>
 </div>
 </div>
-<div id="cell-21" class="cell" data-execution_count="13">
+<div id="cell-22" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>unique_findings_sl12</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="13">
+<div class="cell-output cell-output-display" data-execution_count="20">
 <pre><code>['Sinus bradycardia with marked sinus arrhythmia',
  'Right axis deviation',
  'Borderline ECG',
  'Left axis deviation',
  'Abnormal ECG',
  'Sinus bradycardia',
- 'Sinus bradycardia and sinus arrhythmia and first degree AV block',
+ 'Sinus bradycardia, sinus arrhythmia, first degree AV block',
  'Otherwise normal ECG',
  '***Critical test result: STEMI',
  'Normal sinus rhythm',
@@ -454,7 +466,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>TODO: Explain how we’re classifying different abnormalities.</p>
 <p>TODO: Explain which abnormalities are relevant for athlete misdiagnosis.</p>
-<div id="cell-23" class="cell" data-execution_count="18">
+<div id="cell-24" class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Classifying findings by the type of abnormality</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AbnormalityClass(Enum):</span>
@@ -475,7 +487,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="overall-finding">Overall finding</h3>
 <p>It is common practice to give an ECG recording or segment of a recording an overall finding of “normal”, “borderline” or “abnormal” to aid clinical decision-making.</p>
 <p>In the norwegian-athlete-ecg dataset, human cardiologists classified 2 recordings as “borderline”, and the remaining 26 as “normal”. Observing the difference in overall finding between human cardiologist and SL12 algorithm gives an idea of the difficulty of interpretation posed by each recording.</p>
-<div id="cell-28" class="cell" data-execution_count="14">
+<div id="cell-29" class="cell">
 <details class="code-fold">
 <summary>Extract overall ECG findings from dataset and measure disagreement between C and SL12</summary>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The final finding in each report is an "overall" classification for the </span></span>
@@ -544,7 +556,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-64"><a href="#cb17-64" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print(f"{athlete_id} disagreement = {overall_sl12.value - overall_c.value}\tc = {overall_c.name}")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="cell-29" class="cell" data-execution_count="19">
+<div id="cell-30" class="cell">
 <details class="code-fold">
 <summary>Plot difference between C and SL12 overall findings</summary>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>sns.set_theme(style<span class="op">=</span><span class="st">"ticks"</span>)</span>
@@ -606,15 +618,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb18-57"><a href="#cb18-57" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-58"><a href="#cb18-58" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Marquette-SL12-misclassification_files/figure-html/cell-17-output-1.png" class="img-fluid figure-img"></p>
-</figure>
 </div>
-</div>
-</div>
-<div id="cell-30" class="cell" data-execution_count="16">
+<p><strong><em>Figure: Difference in overall ECG recording finding between Cardiologist (C) and Machine (SL12) reports.</em></strong></p>
+<div id="cell-32" class="cell">
 <details class="code-fold">
 <summary>Add overall finding labels to pandas dataframe</summary>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>athlete_ecg_df <span class="op">=</span> athlete_ecg_df.assign(</span>
@@ -626,76 +632,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="cell-31" class="cell" data-execution_count="17">
+<div id="cell-33" class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>athlete_ecg_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="17">
-<div>
-
-
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">athlete_id</th>
-<th data-quarto-table-cell-role="th">cardiologist</th>
-<th data-quarto-table-cell-role="th">machine</th>
-<th data-quarto-table-cell-role="th">overall_c</th>
-<th data-quarto-table-cell-role="th">overall_sl12</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
-<td>ath_001</td>
-<td>C: Sinus arrhythmia, Normal ECG</td>
-<td>SL12: Sinus bradycardia with marked sinus arrh...</td>
-<td>Normal</td>
-<td>Borderline</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
-<td>ath_002</td>
-<td>C: Sinus arrhythmia, Right axis deviation, Nor...</td>
-<td>SL12: Sinus bradycardia with marked sinus arrh...</td>
-<td>Normal</td>
-<td>Borderline</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
-<td>ath_003</td>
-<td>C: Normal sinus rhythm, Left axis deviation, B...</td>
-<td>SL12: Sinus bradycardia with marked sinus arrh...</td>
-<td>Borderline</td>
-<td>Abnormal</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">3</td>
-<td>ath_004</td>
-<td>C: Normal sinus rhythm, Normal ECG</td>
-<td>SL12: Sinus bradycardia, Right axis deviation,...</td>
-<td>Normal</td>
-<td>Borderline</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">4</td>
-<td>ath_005</td>
-<td>C: Sinus bradycardia, normal sinus rhythm, Fir...</td>
-<td>SL12: Sinus bradycardia and sinus arrhythmia a...</td>
-<td>Normal</td>
-<td>Normal</td>
-</tr>
-</tbody>
-</table>
-
-</div>
-</div>
 </div>
 </section>
 <section id="rhythm-findings" class="level3">
 <h3 class="anchored" data-anchor-id="rhythm-findings">Rhythm findings</h3>
 <p>TODO: Disagreement between cardiologist and machine for individual abnormality classes.</p>
 <p>TODO: Add rhythm labels to dataset</p>
-<div id="cell-35" class="cell" data-execution_count="22">
+<div id="cell-37" class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># class SinusRhythmFinding(Enum):</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co">#     Tachycardia = 0     # Fast rhythm</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co">#     Bradycardia = 1     # Slow rhythm</span></span>
@@ -704,10 +649,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Slow/escape rhythm</span></span>
 <span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
 <span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> classifyRhythmFindings(findings: List[<span class="bu">str</span>]):</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Classifies rhythm findings from an ECG findings report</span></span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">""</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> classifyRhythmFinding(finding: <span class="bu">str</span>):</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Classifies rhythm finding from an ECG findings report</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Multiple rhythm findings could be present in a single comment.</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="co">    e.g. 'Sinus bradycardia with marked sinus arrhythmia'</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>    f <span class="op">=</span> finding.lower()</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Is it a sinus rhythm finding?</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> f.find(<span class="st">"sinus"</span>) <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span>:</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> f.find(<span class="st">"arrhythmia"</span>) <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span>:</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="st">""</span></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> f.find(<span class="st">"bradycardia"</span>) <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span>:</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="st">""</span></span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> f.find(<span class="st">"tachycardia"</span>) <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span>:</span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="st">""</span></span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> (f.find(<span class="st">"normal"</span>) <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span>) <span class="kw">and</span> <span class="kw">not</span> (f.find(<span class="st">"abnormal"</span>) <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span>:)</span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Is it some other rhythm finding?</span></span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">""</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
