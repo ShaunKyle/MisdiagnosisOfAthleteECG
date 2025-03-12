@@ -11,8 +11,8 @@ In addition to the original datasets used in the 2020 PhysioNet Challenge, this
 project also tests the models on a unique patient cohort: professional 
 athletes. 
 
-Reports (hosted by [nbsanity](https://www.answer.ai/posts/2024-12-13-nbsanity.html)):
-- [Misclassification of athlete ECG by GE Marquette SL12 algorithm](https://nbsanity.com/ShaunKyle/PhysioNetChallenge2020/blob/main/nbs/Marquette-SL12-misclassification.ipynb)
+Results are published to https://shaunkyle.github.io/MisdiagnosisOfAthleteECG
+- Misclassification of athlete ECG by GE Marquette SL12 algorithm
 - TODO: Measuring shift in population between datasets
 - TODO: Verify model performance on 2020 PhysioNet Challenge datasets
 - TODO: Reduced model performance on athletic datasets
