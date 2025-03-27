@@ -8,7 +8,7 @@ wfdb
 GitPython
 
 # Required by `driver.py` in every team entry
-numpy
+numpy<2     # Otherwise packages from 2020 or earlier stop working.
 scipy
 
 # Development and analysis tools
@@ -18,9 +18,14 @@ pandas
 
 # # Team: DSAIL_SNU
 # # upgrade thop -> ultralytics-thop (for profiling PyTorch models)
-# scikit_learn
-# ultralytics-thop
-# future
+scikit_learn
+ultralytics-thop
+future
 
 # # Team: Prna
+# scikit_learn
+# joblib
+# biosppy==0.3.0
+# tqdm
+# pyentrp
 # PyWavelets
