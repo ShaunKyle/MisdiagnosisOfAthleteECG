@@ -103,3 +103,6 @@ if __name__ == "__main__":
 
     # TODO: consider if we need MIMIC-IV, and whether we need slightly better 
     # data management than "just wget everything".
+    if input("Do you need MIMIC-IV-ECG? (90.4 GB) [y/n] ").lower() == "y":
+        download_mimiciv() if not (data_dir / "mimic-iv-ecg").exists() else print("mimic-iv-ecg already downloaded")
+    
