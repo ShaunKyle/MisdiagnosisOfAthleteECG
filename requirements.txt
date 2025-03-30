@@ -15,6 +15,7 @@ scipy
 ipykernel
 seaborn[stats]
 pandas
+torchinfo
 
 # # Team: DSAIL_SNU
 # # upgrade thop -> ultralytics-thop (for profiling PyTorch models)
