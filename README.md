@@ -40,11 +40,9 @@ Install (or update) dependencies
 ```sh
 # On computer with CUDA 11.6
 uv pip install -U -r requirements-CUDA.txt
-uv pip install -U -r requirements.txt
 
 # On other computers (uses CPU)
 uv pip install -U -r requirements-CPU.txt
-uv pip install -U -r requirements.txt
 ```
 
 Documentation website
