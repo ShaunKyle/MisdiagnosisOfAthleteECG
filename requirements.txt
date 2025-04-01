@@ -17,11 +17,14 @@ seaborn[stats]
 pandas
 torchinfo
 
-# # Team: DSAIL_SNU
+# Team: DSAIL_SNU (import dsail)
+git+https://github.com/ShaunKyle/PhysioNet-Challange-2020.git@main
 # # upgrade thop -> ultralytics-thop (for profiling PyTorch models)
-scikit_learn
-ultralytics-thop
-future
+# scikit_learn
+# ultralytics-thop
+# future
+
+# git+https://github.com/seonwoo-min/PhysioNet-Challange-2020.git@main
 
 # # Team: Prna
 # scikit_learn
