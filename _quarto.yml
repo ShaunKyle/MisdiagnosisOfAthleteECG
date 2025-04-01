@@ -3,13 +3,20 @@ project:
   output-dir: docs
   render:
     - nbs/Marquette-SL12-misclassification.ipynb
+    - nbs/DSAIL_model.ipynb
+    - about.md
 
 website:
   title: "Misdiagnosis of athlete ECG recordings"
   navbar:
     left:
+      - href: about.md
+        text: About
       - href: nbs/Marquette-SL12-misclassification.ipynb
-        text: 1. Norwegian case study
+        text: 1. Case study of athlete misdiagnosis
+      - href: nbs/DSAIL_model.ipynb
+        text: 2. Benchmarking an open source ECG classifier
+        # 3. Domain adaptation methods
 
 format:
   html:
