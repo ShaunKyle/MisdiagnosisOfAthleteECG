@@ -39,7 +39,7 @@ def get_all_records(dataset_dir: Path) -> List[Path]:
                 records.append( item.stem )
     return records
 
-def get_predicted_labels(file) -> List[int]:
+def get_predicted_findings(file) -> List[int]:
     """Get model predictions PhysioNet 2020 challenge ouput CSV file.
     
     Returns list of SNOMED-CT diagnosis codes.
@@ -54,3 +54,21 @@ def get_predicted_labels(file) -> List[int]:
             predicted_labels.append(code)
     
     return predicted_labels
+
+def codes_to_label_vector(codes: List[int], labels: List[int]):
+    """Converts a list of SNOMED-CT codes to binary outcome labels
+
+    Useful when calculating confusion matrices.
+
+    ```python
+    codes = [222, 333]
+    labels = [111, 222, 333, 444]
+    codes_to_label_vector(codes, labels)
+    > [0, 1, 1, 0]
+    ```
+    """
+    vector = []
+    for code in labels:
+        outcome = 1 if code in codes else 0
+        vector.append(outcome)
+    return vector
