@@ -49,10 +49,10 @@ def classify_relevant_findings(comments: List[int]):
     Only works with norwegian-athlete-ecg dataset and extract_findings.
     """
     findings = []
-
-    # Sinus rhythm
+    
     for c in comments:
         c = c.lower()
+        # Sinus rhythm
         if c.find("sinus") != -1:
             if c.find("arrhythmia") != -1:
                 findings.append(427393009)
@@ -63,9 +63,14 @@ def classify_relevant_findings(comments: List[int]):
             if (c.find("normal") != -1) and not (c.find("abnormal") != -1):
                 findings.append(426783006)
     
-    # Right bundle branch block
+        # Right bundle branch block
+        if c.find("right bundle branch block") != -1:
+            if c.find("incomplete") != -1:
+                findings.append(713426002)
+            elif c.find("complete") != -1:
+                findings.append(713427006)
 
-    # T-wave
+        # T-wave
 
     return findings
 
