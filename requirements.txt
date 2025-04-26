@@ -4,8 +4,9 @@ requests
 # Waveform Database (handling physiological signals, accessing PhysioNet data)
 wfdb
 
-# PF12RED dataset is hosted on GitHub
+# PF12RED dataset is hosted on GitHub, files are XML and PDF
 GitPython
+xmltodict
 
 # Required by `driver.py` in every team entry
 numpy<2     # Otherwise packages from 2020 or earlier stop working.
