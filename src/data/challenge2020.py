@@ -3,8 +3,10 @@
 
 from src.data.util import diagnosis_codes
 
+from pathlib import Path
 from typing import List, TypedDict
 
+import wfdb
 import pandas as pd
 
 def extract_snomed_ct_codes_from_comment(dx_comment: str) -> List[int]:
@@ -27,7 +29,10 @@ def extract_snomed_ct_codes_from_comment(dx_comment: str) -> List[int]:
     comment = dx_comment.split(': ')[1]
 
     # Split codes into list, convert to integers
+    # Also check for trailing comma
     code_text = comment.split(',')
+    if code_text[-1] == '':
+        code_text.pop()
     return list(map(int, code_text))
 
 class DemographicInfo(TypedDict):
